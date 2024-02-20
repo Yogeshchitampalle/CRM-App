@@ -1,5 +1,3 @@
-
-
 import React, { useEffect, useState } from 'react'
 import Navbar from '../../Component/Navbar/Navbar'
 import { useNavigate, useParams } from 'react-router-dom';

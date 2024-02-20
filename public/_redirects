@@ -1,1 +1,2 @@
 /* /index.html 200
+/api/*  https://mycrmserver.netlify.app/api/:splat  200

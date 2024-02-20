@@ -5,48 +5,41 @@ import Navbar from '../../Component/Navbar/Navbar'
 import { useNavigate, useParams } from 'react-router-dom';
 
 function CreateList() {
-
   const [newData, setNewData] = useState({});
   const navigate = useNavigate();
   const API = 'https://mycrmserver.netlify.app/api/customer/';
 
-
-  const { name } = useParams()
-  // console.log(name)
-
-
-
-
-  //For Update
+  const { name } = useParams();
 
   useEffect(() => {
     if (name) {
-      fetch(`${API}/${name}`).then(res => {
-        return res.json()
-      }).then(r => {
-        console.log(r)
-        setNewData(r)
-      })
+      fetch(`${API}/${name}`)
+        .then(res => res.json())
+        .then(data => {
+          setNewData(data);
+        })
+        .catch(error => console.error('Error fetching customer data:', error));
     }
-
-  }, [name])
-
+  }, [name, API]);
 
   function Create() {
-    // method: uniqueID ? "PUT" : "POST",
-    fetch(API, {
-      // method:  "POST",
-      method: name ? "PUT" : "POST",
+    const method = name ? 'PUT' : 'POST';
+    fetch(API + (name ? `/${name}` : ''), {
+      method: method,
       body: JSON.stringify(newData),
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
     })
-      .then((res) => {
-        navigate('/')
+      .then(res => {
+        if (res.ok) {
+          navigate('/');
+        } else {
+          throw new Error('Failed to create/update customer');
+        }
       })
-  }
-
+      .catch(error => console.error('Error creating/updating customer:', error));
+  } 
   return (
     <div>
       <Navbar />
